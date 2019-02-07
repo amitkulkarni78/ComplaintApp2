@@ -1,4 +1,4 @@
-
+import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './../../services/user.service';
@@ -9,7 +9,7 @@ import { User } from '../../interfaces/user';
 import { Observable } from 'rxjs';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
-import { map } from 'rxjs/operators';
+
 
 
 @Component({
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   actionLog : string[];
 
   d = new Date();
-  constructor(private cookieservice: CookieService , private userservice: UserService , private router: Router , private complaintservice: ComplaintService,private modalService: NgbModal) { }
+  constructor(private cookieservice: CookieService , private userservice: UserService , private router: Router , private complaintservice: ComplaintService,private modalService: NgbModal ) { }
 
   ngOnInit() {
 
@@ -38,8 +38,7 @@ export class HomeComponent implements OnInit {
 
       this.userservice.getUserById(this.cokieeValue).subscribe((data) =>{
         console.log(data);
-        var response = JSON.parse(data);
-        this.user = data.email;
+        this.user = data.data.email;
         console.log(this.user);
       });
 

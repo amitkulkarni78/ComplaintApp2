@@ -17,7 +17,7 @@ export class ComplaintService {
 
   register(complaint) {
     const params = new HttpParams().set('email', complaint.email).set('title', complaint.title).set('description', complaint.description).set('status', complaint.status).set('actionLog', complaint.actionLog);
-    return this.httpclient.post<any>(this.baseUrl + '/complaint/register', params);
+    return this.httpclient.post(this.baseUrl + '/complaint/register', params);
   }
 
   getAllComplaints(){
@@ -27,12 +27,12 @@ export class ComplaintService {
   updateComplaint(complaint){
     console.log(complaint);
     const params = new HttpParams().set('email', complaint.email).set('title', complaint.title).set('description', complaint.description).set('status', complaint.status).set('actionLog', complaint.actionLog);
-    return this.httpclient.post<any>(this.baseUrl+"/complaint/update/"+complaint._id, params);
+    return this.httpclient.post(this.baseUrl+"/complaint/update/"+complaint._id, params);
   }
 
   delete(complaint) {
     const params = new HttpParams();
-    return this.httpclient.post<any>(this.baseUrl + '/complaint/delete/'+complaint._id, params);
+    return this.httpclient.post(this.baseUrl + '/complaint/delete/'+complaint._id, params);
 
   }
 
