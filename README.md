@@ -29,7 +29,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Usage 
 
 clone the repository in the folder you want to execute the application. Prior to cloning this repo you must have the Complaint App Server.
+
 If you dont have here is the repo link.https://github.com/amitkulkarni78/ComplaintAppServer.git.
+
+install angular cli to run the application by running this command in command promt : `npm install -g @angular/cli`.
+visit https://cli.angular.io/ for more information.
 
 once the server is runnig , open the root folder of the app in command prompt and enter command `ng server`. The app will be running.
 Now visit `http://localhost:4200/` on your browser to access the application.
