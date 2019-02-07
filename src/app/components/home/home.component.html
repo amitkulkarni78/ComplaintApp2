@@ -1,0 +1,165 @@
+<nav class="navbar navbar-light bg-light" style="text-align: center">
+  <a class="navbar-brand" href="#">
+    <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    Hi {{user}} !
+  </a>
+  <form class="form-inline my-2 my-lg-0">
+
+    <!-- button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+    <button (click)="logout()" class="btn btn-lg btn-outline-primary">Logout </button>
+  </form>
+</nav>
+
+
+<div class="container">
+  <div class="row justify-content-md-center" style="text-align:center;padding :20px 20px">
+    <h5></h5>
+</div>
+  <div class="row justify-content-md-center">
+
+    <div class="col-md-auto">
+        <button type="button" class="btn btn-outline-primary" (click)="open2(content2)">Add New</button>
+      <div class="jumbotron"  style="text-align:center;padding :20px 20px">
+          <h6>Complaints</h6>
+
+        <table   class="table table-borderless table-dark table-hover table-responsive">
+
+          <thead>
+            <tr>
+              <td>ID</td>
+              <td>TITLE</td>
+              <td>DESCRIPTION</td>
+              <td>STATUS</td>
+              <td>CREATED AT</td>
+              <td>EDIT</td>
+              <td>DELETE</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of complaints; let i = index">
+
+              <td>{{i+1}}</td>
+              <td>{{item.title}}</td>
+              <td>{{item.description}}</td>
+              <td>{{item.status}}</td>
+              <td>{{item.createdAt}}</td>
+              <td><button (click)="open(content,item)" class="btn btn-sm btn-outline-primary">Edit</button></td>
+              <td><button (click)="delete(item)" class="btn btn-sm btn-outline-primary">Delete</button></td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title" style="color:black;text-align:center">Edit Complaint</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body " style="background: #212529;
+  color: white;">
+    <form style="width:100%">
+
+
+      <div class="form-group">
+        <label for="title">Title </label>
+        <input type="text" class="form-control" placeholder={{selectedItem.title}} [(ngModel)]="selectedItem.title"
+          name="title" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description </label>
+        <input type="text" class="form-control" placeholder={{selectedItem.description}} [(ngModel)]="selectedItem.description"
+          name="description" required />
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Created At </label>
+        {{selectedItem.createdAt}}
+      </div>
+      <div class="form-group">
+        <label for="status">Status </label>
+        <select value="{{selectedItem.status}}" [(ngModel)]="selectedItem.status" name="status" class="form-control">
+          <option>registered</option>
+          <option>pending</option>
+          <option>resolved</option>
+        </select>
+      </div>
+
+
+
+
+      <h6>Log:</h6>
+      <div style="max-height: 100px; overflow-y: scroll">
+        <table class="table table-borderless table-dark table-hover">
+          <tbody>
+            <tr *ngFor="let item of selectedItem.actionLog[0].split(',')  ; let i = index">
+
+              <td>{{item}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="update(selectedItem)">Update</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title" style="color:black;text-align:center">Add Complaint</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="background: #212529;
+    color: white;">
+    <form>
+      <table class="table table-borderless table-dark table-hover">
+        <tbody>
+          <tr>
+            <td>title</td>
+            <td><input type="text" placeholder=title [(ngModel)]="complaint.title" name="title" required/></td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td><input type="text" placeholder=description [(ngModel)]="complaint.description" name="description" required/></td>
+          </tr>
+
+          <tr>
+            <td>status</td>
+            <td><select value="registered" [(ngModel)]="complaint.status" name="status" >
+                <option>registered</option>
+                <option>pending</option>
+                <option>resolved</option>
+              </select></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="save(complaint)">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>
+
+
+
+
+<hr>
+
+<pre>{{closeResult}}</pre>
