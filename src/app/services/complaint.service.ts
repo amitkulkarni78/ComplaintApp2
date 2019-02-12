@@ -15,19 +15,26 @@ export class ComplaintService {
 
   constructor(private httpclient: HttpClient) { }
 
-  register(complaint) {
+  register(complaint) : Promise<any>{
     const params = new HttpParams().set('email', complaint.email).set('title', complaint.title).set('description', complaint.description).set('status', complaint.status).set('actionLog', complaint.actionLog);
-    return this.httpclient.post(this.baseUrl + '/complaint/register', params);
+    return this.httpclient.post(this.baseUrl + '/complaint/register', params)
+                    .toPromise()
+                    .then((data) => data);
   }
 
-  getAllComplaints(){
-    return this.httpclient.get(this.baseUrl + '/complaints');
+
+  getAllComplaints():Promise<any>{
+    return this.httpclient.get(this.baseUrl + '/complaints')
+                    .toPromise()
+                    .then((data) => data);
   }
 
-  updateComplaint(complaint){
+  updateComplaint(complaint) : Promise<any>{
     console.log(complaint);
     const params = new HttpParams().set('email', complaint.email).set('title', complaint.title).set('description', complaint.description).set('status', complaint.status).set('actionLog', complaint.actionLog);
-    return this.httpclient.post(this.baseUrl+"/complaint/update/"+complaint._id, params);
+    return this.httpclient.post(this.baseUrl+"/complaint/update/"+complaint._id, params)
+                    .toPromise()
+                    .then((data) => data);
   }
 
   delete(complaint) {

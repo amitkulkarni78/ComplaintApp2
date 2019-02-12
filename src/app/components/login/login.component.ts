@@ -19,9 +19,9 @@ export class LoginComponent implements OnInit {
   constructor(private userservice: UserService , private cookieservice: CookieService , private router : Router, private toster: ToastrService) {
     this.user.email = '';
     this.user.password = '';
-    this.toster.success('User Logged in','Major',{
+    /* this.toster.success('User Logged in','Major',{
       timeOut: 3000
-    });
+    }); */
   }
 
   ngOnInit() {
@@ -30,14 +30,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     console.log(this.user);
-    this.userservice.login(this.user).subscribe(data => {
+    this.userservice.login(this.user).then(data => {
       console.log(data);
       if(data.status == true){
         this.cookieservice.set('UserId', data.data._id);
-        this.toster.success('User Logged in');
+        this.toster.success('Success Message: You are logged in','wlecome '+this.user.email,{
+          timeOut: 3000
+        });
         this.router.navigate(['/home']);
       }else{
-
+        this.toster.error('Error Message: You are not logged in','Please try again ',{
+          timeOut: 3000
+        });
       }
 
     });

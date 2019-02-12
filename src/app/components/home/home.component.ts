@@ -8,7 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { Observable } from 'rxjs';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   actionLog : string[];
 
   d = new Date();
-  constructor(private cookieservice: CookieService , private userservice: UserService , private router: Router , private complaintservice: ComplaintService,private modalService: NgbModal ) { }
+  constructor(private cookieservice: CookieService , private userservice: UserService , private router: Router , private complaintservice: ComplaintService,private modalService: NgbModal ,private toster : ToastrService) { }
 
   ngOnInit() {
 
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
       this.cokieeValue = this.cookieservice.get('UserId');
       console.log( this.cokieeValue);
 
-      this.userservice.getUserById(this.cokieeValue).subscribe((data) =>{
+      this.userservice.getUserById(this.cokieeValue).then((data) =>{
         console.log(data);
         this.user = data.data.email;
         console.log(this.user);
@@ -57,7 +57,8 @@ export class HomeComponent implements OnInit {
 
     this.selectedItem = item;
     console.log('// open',this.selectedItem);
-    this.actionLog =  this.selectedItem.actionLog;
+    const item1 = this.selectedItem;
+    console.log(item1);
     console.log(this.actionLog);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -86,16 +87,27 @@ export class HomeComponent implements OnInit {
     complaint.actionLog.unshift(action);
 
     console.log(complaint);
-    this.complaintservice.updateComplaint(complaint).subscribe((data)=>{
+    this.complaintservice.updateComplaint(complaint).then((data)=>{
       console.log(data);
+      this.toster.success('Success Message: Complaint updated','',{
+        timeOut: 3000
+      });
       this.getAllComplaints();
+    }).catch((error)=>{
+      this.toster.error('Error Message: Complaint was not updated',"",{
+        timeOut: 3000
+      });
     })
   }
 
   getAllComplaints(){
-    this.complaintservice.getAllComplaints().subscribe(data=>{
+    this.complaintservice.getAllComplaints().then(data=>{
       console.log(data);
       this.complaints = data.data;
+   }).catch((error)=>{
+    this.toster.error('Error Message: Complaint were not found','',{
+      timeOut: 3000
+    });
    });
   }
 
@@ -103,9 +115,16 @@ export class HomeComponent implements OnInit {
     console.log(complaint);
     complaint.email = this.user;
     complaint.actionLog = "complaint created by "+this.user+" on "+ this.d,
-    this.complaintservice.register(complaint).subscribe(data=>{
+    this.complaintservice.register(complaint).then(data=>{
       console.log(data);
+      this.toster.success('Success Message: Complaint registered','',{
+        timeOut: 3000
+      });
       this.getAllComplaints();
+    }).catch((error)=>{
+      this.toster.error('Error Message: Complaint was not registered','please try again',{
+        timeOut: 3000
+      });
     })
   }
 
@@ -114,6 +133,9 @@ export class HomeComponent implements OnInit {
 
     this.complaintservice.delete(complaint).subscribe(data=>{
       console.log(data);
+      this.toster.success('Success Message: Complaint was deleted','',{
+        timeOut: 3000
+      });
       this.getAllComplaints();
     })
   }
